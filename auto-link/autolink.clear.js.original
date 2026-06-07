@@ -1,0 +1,518 @@
+(function() {
+    // 1. Get Current URL
+    const currentUrl = window.location.href;
+
+    // 2. Set Title and Meta Description for SEO
+    const titles = [
+        '[keyword1] Slot Gacor Hari Ini [keyword2] dan [keyword3]',
+        '[keyword1] Slot Gacor Online [keyword2] dan [keyword3]',
+        '[keyword1] Slot Gacor 4D Online [keyword2] dan [keyword3]', 
+        '[keyword1] Slot Gacor Slot777 [keyword2] dan [keyword3]',
+        '[keyword1] Slot Online Hari Ini [keyword2] dan [keyword3]',
+        '[keyword1] Slot Pola Petir Merah x500 [keyword2] dan [keyword3]',
+        '[keyword1] Slot Zeus Petir x1000 [keyword2] dan [keyword3]',
+        '[keyword1] Game Slot Online 2026 [keyword2] dan [keyword3]',
+        '[keyword1] Online Game #1 Indonesia [keyword2] dan [keyword3]',  
+        '[keyword1] Games Online [keyword2] dan [keyword3] di Indonesia',
+        '[keyword1] Permainan Online [keyword2] dan [keyword3] di Indonesia',
+        '[keyword1] TOTO Togel 4D & Slot Gacor [keyword2] dan [keyword3]',
+        '[keyword1] Game Online Scatter Hitam [keyword2] dan [keyword3]',
+    ];
+
+    const descriptions = [
+        'adalah portal slot gacor hari ini yang menyediakan permainan situs GACOR777 dengan penawaran fitur bonus link SLOT777 menarik gampang MAXWIN.', 
+        'merupakan alternatif platform yang menghadirkan pengalaman slot gacor dengan akses melalui link slot88 resmi serta dukungan agen maxwin terpercaya.', 
+        'adalah situs slot online 4D yang terkenal sebagai slot gacor hari ini gampang maxwin dengan minimal bet 200 perak anti rungkad.',  
+        'adalah situs slot gacor #1 Indonesia yang sedang berbagi jatah maxwin kepada semua member yang ingin bermain slot dengan tingkat kemenangan jackpot tercepat.',
+        'merupakan link situs slot gacor hari ini yang memiliki bocoran resmi slot88 serta slot777 online gampang menang maxwin dengan winrate 98%.', 
+        'merupakan platform penyedia game online resmi berlisensi dan terpercaya bagi seluruh pelanggan setia di Indonesia.',
+        'merupakan daftar situs slot gacor yang menyediakan layanan terpercaya untuk bermain link slot88 online anti kalah khusus untuk pengguna zeus pasti x1000.',
+        'merupakan penyedia link resmi slot online 2026 terpopuler dan paling hoki, dijamin mudah menang maxwin dengan winrate 98%.',
+        'merupakan situs slot gacor online hari ini memiliki reputasi link pembawa HOKI untuk pencari JP maxwin berdasarkan RTP live slot tinggi dan pilihan slot777 terbaik.',
+        'menyediakan akses games online resmi dengan pelayanan terbaik. Situs slot online rtp live paling update kesempatan banjir jackpot tiap hari.',
+        'merupakan platform slot #1 Indonesia yang terpercaya dan menawarkan game exclusive mudah maxwin di setiap permainan.',
+        'adalah situs slot gacor hari ini terpercaya serta penyedia link slot online terbaru gampang menang maxwin dengan winrate 98%.',
+        'adalah platform game online resmi berlisensi dan terpercaya bagi seluruh pelanggan setia di Indonesia dengan penawaran fitur bonus menarik gampang maxwin.'
+    ];
+
+    const keyword1 = ['Situs', 'Platform', 'Portal', 'Akses Resmi', 'Agen Resmi', 'Link Resmi', 'Situs Resmi', 'Daftar Situs', 'Daftar Link', 'Daftar Akses'];
+    const keyword2 = ['Terbaru', 'Terviral', 'Terpopuler', 'Terbaik', 'Terpercaya', 'Terupdate', 'Terkini', 'Terlengkap', 'Tercepat', 'Teraman', 'Terbesar', 'Terfavorit', 'Berlisensi'];
+    const keyword3 = ['Paling Seru', 'Paling Hoki', 'Paling Gacor', 'Mudah Menang', 'Gampang Maxwin', 'Paling Banyak Jackpot', 'Paling Banyak Bonus', 'Banjir Jackpot Tiap Hari', 'Pasti Maxwin', 'Anti Rungkad', 'Winrate 98%', 'RTP Live Tinggi', 'Pasti X1000'];
+    
+    // Create a Unique Hash based on the current URL path
+    const urlPath = window.location.pathname;
+    let urlHash = 0;
+    for (let i = 0; i < urlPath.length; i++) {
+        urlHash += urlPath.charCodeAt(i);
+    }
+
+    // Combine with the Month to create a "Seed"
+    const currentMonth = new Date().getMonth(); 
+    const seed = urlHash + currentMonth;
+
+    // Pick random title, description, and keywords using the Seed. 
+    // This ensures that the same URL will stay consistent with the same title and description each month, 
+    // while ensuring different URLs will get different outcomes to avoid duplication.
+    // Example: if seed is 12345, and there are 13 titles, it will pick title at index 12345 % 13 = 8.
+    // Adding an offset (seed + 7) to ensure we get different keywords, example: if seed is 12345 with 13 keywords, it will pick keyword at index (12345 + 7) % 13 = 2.
+    const titleIdx = seed % titles.length;
+    const descIdx = seed % descriptions.length;
+    const k1Idx = seed % keyword1.length;
+    const k2Idx = (seed + 7) % keyword2.length; 
+    const k3Idx = (seed + 13) % keyword3.length;
+
+    // Pick random title and description
+    let selectedTitle = titles[titleIdx];
+    let selectedDescription = descriptions[descIdx];
+
+    // Pick random keywords to construct title
+    selectedTitle = selectedTitle.replace(/\[keyword1\]/g, keyword1[k1Idx])
+                                 .replace(/\[keyword2\]/g, keyword2[k2Idx])
+                                 .replace(/\[keyword3\]/g, keyword3[k3Idx]);
+    
+    // Extract brand name from existing title if it contains a separator like ":"
+    let brandName;
+    const currentPageTitle = document.title; 
+    if (currentPageTitle.indexOf(':') >= 0) {
+        brandName = currentPageTitle.split(':')[0].trim();
+    }
+
+    // Construct new title and description with brand name if it exists
+    let newTitle = brandName ? `${brandName}: ${selectedTitle}` : selectedTitle;
+    let newDescription = brandName ? `${brandName} ${selectedDescription}` : selectedDescription;
+
+    // Set the new title and meta description on the page
+    document.title = newTitle;
+    const metaTitle = document.querySelector('meta[name="title"]');
+    if (metaTitle) {
+        metaTitle.setAttribute('content', newTitle);
+    }
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+        metaDescription.setAttribute('content', newDescription);
+    }
+    
+    // 3. Set HTML lang attribute 
+    document.documentElement.setAttribute('lang', 'id-ID');
+
+    // 4. Set Cannonical and Hreflang Links to current URL for SEO and Geo-targeting
+    const setLink = (rel, href, hreflang = null) => {
+        let selector = `link[rel="${rel}"]`;
+        if (hreflang) selector += `[hreflang="${hreflang}"]`;
+        let tag = document.querySelector(selector) || document.createElement('link');
+        tag.setAttribute('rel', rel);
+        tag.setAttribute('href', href);
+        if (hreflang) tag.setAttribute('hreflang', hreflang);
+        if (!tag.parentNode) document.head.appendChild(tag);
+    };
+
+    setLink('canonical', currentUrl);
+    setLink('alternate', currentUrl, 'id-ID');
+    setLink('alternate', currentUrl, 'x-default');
+
+    // 5. Set LocalBusiness Schema for geo-targeting
+    const businessSchema = {
+        "@context": "https://schema.org",
+        "@type": "LocalBusiness",
+        "name": "Slot Gacor MAXWIN",
+        "image": "https://7qbb6tluxkzf6t8y.public.blob.vercel-storage.com/assets/images/default_banner_3.jpg",
+        "@id": window.location.origin,
+        "url": currentUrl,
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Jl. Gajah Mada No. 123",
+            "addressLocality": "Jakarta Pusat",
+            "addressRegion": "DKI Jakarta",
+            "postalCode": "10120",
+            "addressCountry": "ID"
+        },
+        "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": -6.2088,
+            "longitude": 106.8456
+        }
+    };
+
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.text = JSON.stringify(businessSchema);
+    document.head.appendChild(script);
+
+    // 6. Apply minimum width of 320px for mobile responsiveness to page content div, and inject the style after DOM is loaded
+    document.addEventListener("DOMContentLoaded", function() {
+        const pageContentDiv = document.querySelector('[data-selector="listing-page-content"]');
+        if (pageContentDiv) {
+            pageContentDiv.style.width = '100%';
+            pageContentDiv.style.minWidth = '320px';
+        }
+        else{
+            console.error('Page content div not found');
+        }
+    });
+
+    // 7. Generate backlinks
+    const linkList = [
+    { name: 'islandcarrental-gilaslot', url: 'https://www.islandcarrental.co/wp-content/plugins/seo-tunnel/index.php?site=gila', rel: 'dofollow', target: '_blank' },
+    { name: 'islandcarrental-cmbet', url: 'https://www.islandcarrental.co/wp-content/plugins/seo-tunnel/index.php?site=cmbet', rel: 'dofollow', target: '_blank' },
+    { name: 'islandcarrental-pusakajitu', url: 'https://www.islandcarrental.co/wp-content/plugins/seo-tunnel/index.php?site=pusakajitu', rel: 'dofollow', target: '_blank' },
+    { name: 'islandcarrental-lvbet', url: 'https://www.islandcarrental.co/wp-content/plugins/seo-tunnel/index.php?site=lvbet', rel: 'dofollow', target: '_blank' },
+    { name: 'islandcarrental-mahkotajitu', url: 'https://www.islandcarrental.co/wp-content/plugins/seo-tunnel/index.php?site=mahkotajitu', rel: 'dofollow', target: '_blank' },
+    { name: 'islandcarrental-pesiarbet', url: 'https://www.islandcarrental.co/wp-content/plugins/seo-tunnel/index.php?site=pesiarbet', rel: 'dofollow', target: '_blank' },
+    { name: 'islandcarrental-singasaritoto', url: 'https://www.islandcarrental.co/wp-content/plugins/seo-tunnel/index.php?site=singasaritoto', rel: 'dofollow', target: '_blank' },
+    { name: 'islandcarrental-juarajitu', url: 'https://www.islandcarrental.co/wp-content/plugins/seo-tunnel/index.php?site=juarajitu', rel: 'dofollow', target: '_blank' },
+    { name: 'islandcarrental-kenzobet', url: 'https://www.islandcarrental.co/wp-content/plugins/seo-tunnel/index.php?site=kenzobet', rel: 'dofollow', target: '_blank' },
+    { name: 'islandcarrental-modaljitu', url: 'https://www.islandcarrental.co/wp-content/plugins/seo-tunnel/index.php?site=modaljitu', rel: 'dofollow', target: '_blank' },
+    { name: 'islandcarrental-alamjitu', url: 'https://www.islandcarrental.co/wp-content/plugins/seo-tunnel/index.php?site=salamjitu', rel: 'dofollow', target: '_blank' },
+    { name: 'islandcarrental-banyu4d', url: 'https://www.islandcarrental.co/wp-content/plugins/seo-tunnel/index.php?site=banyu4d', rel: 'dofollow', target: '_blank' },
+    { name: 'islandcarrental-jagoanjitu', url: 'https://www.islandcarrental.co/wp-content/plugins/seo-tunnel/index.php?site=jagoanjitu', rel: 'dofollow', target: '_blank' },
+    { name: 'islandcarrental-primbonjitu', url: 'https://www.islandcarrental.co/wp-content/plugins/seo-tunnel/index.php?site=primbonjitu', rel: 'dofollow', target: '_blank' },
+    { name: 'islandcarrental-dutajitu', url: 'https://www.islandcarrental.co/wp-content/plugins/seo-tunnel/index.php?site=dutajitu', rel: 'dofollow', target: '_blank' },
+    { name: 'islandcarrental-mei4d', url: 'https://www.islandcarrental.co/wp-content/plugins/seo-tunnel/index.php?site=mei4d', rel: 'dofollow', target: '_blank' },
+    { name: 'islandcarrental-tambakbet', url: 'https://www.islandcarrental.co/wp-content/plugins/seo-tunnel/index.php?site=tambakbet', rel: 'dofollow', target: '_blank' },
+    { name: 'islandcarrental-idxbig', url: 'https://www.islandcarrental.co/wp-content/plugins/seo-tunnel/index.php?site=idxbig', rel: 'dofollow', target: '_blank' },
+    { name: 'islandcarrental-stmbet', url: 'https://www.islandcarrental.co/wp-content/plugins/seo-tunnel/index.php?site=stmbet', rel: 'dofollow', target: '_blank' },
+    { name: 'islandcarrental-obatbet', url: 'https://www.islandcarrental.co/wp-content/plugins/seo-tunnel/index.php?site=obatbet', rel: 'dofollow', target: '_blank' },
+    { name: 'islandcarrental-bayarjitu', url: 'https://www.islandcarrental.co/wp-content/plugins/seo-tunnel/index.php?site=bayarjitu', rel: 'dofollow', target: '_blank' },
+    { name: 'islandcarrental-pagitoto', url: 'https://www.islandcarrental.co/wp-content/plugins/seo-tunnel/index.php?site=pagitoto', rel: 'dofollow', target: '_blank' },
+    { name: 'islandcarrental-mahongtoto', url: 'https://www.islandcarrental.co/wp-content/plugins/seo-tunnel/index.php?site=mahongtoto', rel: 'dofollow', target: '_blank' },
+    { name: 'islandcarrental-jarijitu', url: 'https://www.islandcarrental.co/wp-content/plugins/seo-tunnel/index.php?site=jarijitu', rel: 'dofollow', target: '_blank' },
+    { name: 'islandcarrental-penaklukjitu', url: 'https://www.islandcarrental.co/wp-content/plugins/seo-tunnel/index.php?site=penaklukjitu', rel: 'dofollow', target: '_blank' },
+    { name: 'rently-islandcarrental-gilaslot', url: 'https://rently.islandcarrental.co/wp-content/plugins/seo-tunnel/index.php?site=gila', rel: 'dofollow', target: '_blank' },
+    { name: 'rently-islandcarrental-cmbet', url: 'https://rently.islandcarrental.co/wp-content/plugins/seo-tunnel/index.php?site=cmbet', rel: 'dofollow', target: '_blank' },
+    { name: 'rently-islandcarrental-pusakajitu', url: 'https://rently.islandcarrental.co/wp-content/plugins/seo-tunnel/index.php?site=pusakajitu', rel: 'dofollow', target: '_blank' },
+    { name: 'rently-islandcarrental-lvbet', url: 'https://rently.islandcarrental.co/wp-content/plugins/seo-tunnel/index.php?site=lvbet', rel: 'dofollow', target: '_blank' },
+    { name: 'rently-islandcarrental-mahkotajitu', url: 'https://rently.islandcarrental.co/wp-content/plugins/seo-tunnel/index.php?site=mahkotajitu', rel: 'dofollow', target: '_blank' },
+    { name: 'rently-islandcarrental-pesiarbet', url: 'https://rently.islandcarrental.co/wp-content/plugins/seo-tunnel/index.php?site=pesiarbet', rel: 'dofollow', target: '_blank' },
+    { name: 'rently-islandcarrental-singasaritoto', url: 'https://rently.islandcarrental.co/wp-content/plugins/seo-tunnel/index.php?site=singasaritoto', rel: 'dofollow', target: '_blank' },
+    { name: 'rently-islandcarrental-juarajitu', url: 'https://rently.islandcarrental.co/wp-content/plugins/seo-tunnel/index.php?site=juarajitu', rel: 'dofollow', target: '_blank' },
+    { name: 'rently-islandcarrental-kenzobet', url: 'https://rently.islandcarrental.co/wp-content/plugins/seo-tunnel/index.php?site=kenzobet', rel: 'dofollow', target: '_blank' },
+    { name: 'rently-islandcarrental-modaljitu', url: 'https://rently.islandcarrental.co/wp-content/plugins/seo-tunnel/index.php?site=modaljitu', rel: 'dofollow', target: '_blank' },
+    { name: 'rently-islandcarrental-alamjitu', url: 'https://rently.islandcarrental.co/wp-content/plugins/seo-tunnel/index.php?site=salamjitu', rel: 'dofollow', target: '_blank' },
+    { name: 'rently-islandcarrental-banyu4d', url: 'https://rently.islandcarrental.co/wp-content/plugins/seo-tunnel/index.php?site=banyu4d', rel: 'dofollow', target: '_blank' },
+    { name: 'rently-islandcarrental-jagoanjitu', url: 'https://rently.islandcarrental.co/wp-content/plugins/seo-tunnel/index.php?site=jagoanjitu', rel: 'dofollow', target: '_blank' },
+    { name: 'rently-islandcarrental-primbonjitu', url: 'https://rently.islandcarrental.co/wp-content/plugins/seo-tunnel/index.php?site=primbonjitu', rel: 'dofollow', target: '_blank' },
+    { name: 'rently-islandcarrental-dutajitu', url: 'https://rently.islandcarrental.co/wp-content/plugins/seo-tunnel/index.php?site=dutajitu', rel: 'dofollow', target: '_blank' },
+    { name: 'rently-islandcarrental-mei4d', url: 'https://rently.islandcarrental.co/wp-content/plugins/seo-tunnel/index.php?site=mei4d', rel: 'dofollow', target: '_blank' },
+    { name: 'rently-islandcarrental-tambakbet', url: 'https://rently.islandcarrental.co/wp-content/plugins/seo-tunnel/index.php?site=tambakbet', rel: 'dofollow', target: '_blank' },
+    { name: 'rently-islandcarrental-idxbig', url: 'https://rently.islandcarrental.co/wp-content/plugins/seo-tunnel/index.php?site=idxbig', rel: 'dofollow', target: '_blank' },
+    { name: 'rently-islandcarrental-stmbet', url: 'https://rently.islandcarrental.co/wp-content/plugins/seo-tunnel/index.php?site=stmbet', rel: 'dofollow', target: '_blank' },
+    { name: 'rently-islandcarrental-obatbet', url: 'https://rently.islandcarrental.co/wp-content/plugins/seo-tunnel/index.php?site=obatbet', rel: 'dofollow', target: '_blank' },
+    { name: 'rently-islandcarrental-bayarjitu', url: 'https://rently.islandcarrental.co/wp-content/plugins/seo-tunnel/index.php?site=bayarjitu', rel: 'dofollow', target: '_blank' },
+    { name: 'rently-islandcarrental-pagitoto', url: 'https://rently.islandcarrental.co/wp-content/plugins/seo-tunnel/index.php?site=pagitoto', rel: 'dofollow', target: '_blank' },
+    { name: 'rently-islandcarrental-mahongtoto', url: 'https://rently.islandcarrental.co/wp-content/plugins/seo-tunnel/index.php?site=mahongtoto', rel: 'dofollow', target: '_blank' },
+    { name: 'rently-islandcarrental-jarijitu', url: 'https://rently.islandcarrental.co/wp-content/plugins/seo-tunnel/index.php?site=jarijitu', rel: 'dofollow', target: '_blank' },
+    { name: 'rently-islandcarrental-penaklukjitu', url: 'https://rently.islandcarrental.co/wp-content/plugins/seo-tunnel/index.php?site=penaklukjitu', rel: 'dofollow', target: '_blank' },
+    { name: 'pa277899-gilaslot', url: 'https://pa277899.students.acg.edu/id/gaming/gila', rel: 'dofollow', target: '_blank' },
+    { name: 'pa277899-cmbet', url: 'https://pa277899.students.acg.edu/id/gaming/cmbet', rel: 'dofollow', target: '_blank' },
+    { name: 'pa277899-pusakajitu', url: 'https://pa277899.students.acg.edu/id/gaming/pusakajitu', rel: 'dofollow', target: '_blank' },
+    { name: 'pa277899-lvbet', url: 'https://pa277899.students.acg.edu/id/gaming/lvbet', rel: 'dofollow', target: '_blank' },
+    { name: 'pa277899-mahkotajitu', url: 'https://pa277899.students.acg.edu/id/gaming/mahkotajitu', rel: 'dofollow', target: '_blank' },
+    { name: 'pa277899-pesiarbet', url: 'https://pa277899.students.acg.edu/id/gaming/pesiarbet', rel: 'dofollow', target: '_blank' },
+    { name: 'pa277899-singasaritoto', url: 'https://pa277899.students.acg.edu/id/gaming/singasaritoto', rel: 'dofollow', target: '_blank' },
+    { name: 'pa277899-juarajitu', url: 'https://pa277899.students.acg.edu/id/gaming/juarajitu', rel: 'dofollow', target: '_blank' },
+    { name: 'pa277899-kenzobet', url: 'https://pa277899.students.acg.edu/id/gaming/kenzobet', rel: 'dofollow', target: '_blank' },
+    { name: 'pa277899-modaljitu', url: 'https://pa277899.students.acg.edu/id/gaming/modaljitu', rel: 'dofollow', target: '_blank' },
+    { name: 'pa277899-alamjitu', url: 'https://pa277899.students.acg.edu/id/gaming/salamjitu', rel: 'dofollow', target: '_blank' },
+    { name: 'pa277899-banyu4d', url: 'https://pa277899.students.acg.edu/id/gaming/banyu4d', rel: 'dofollow', target: '_blank' },
+    { name: 'pa277899-jagoanjitu', url: 'https://pa277899.students.acg.edu/id/gaming/jagoanjitu', rel: 'dofollow', target: '_blank' },
+    { name: 'pa277899-primbonjitu', url: 'https://pa277899.students.acg.edu/id/gaming/primbonjitu', rel: 'dofollow', target: '_blank' },
+    { name: 'pa277899-dutajitu', url: 'https://pa277899.students.acg.edu/id/gaming/dutajitu', rel: 'dofollow', target: '_blank' },
+    { name: 'pa277899-mei4d', url: 'https://pa277899.students.acg.edu/id/gaming/mei4d', rel: 'dofollow', target: '_blank' },
+    { name: 'pa277899-tambakbet', url: 'https://pa277899.students.acg.edu/id/gaming/tambakbet', rel: 'dofollow', target: '_blank' },
+    { name: 'pa277899-idxbig', url: 'https://pa277899.students.acg.edu/id/gaming/idxbig', rel: 'dofollow', target: '_blank' },
+    { name: 'pa277899-stmbet', url: 'https://pa277899.students.acg.edu/id/gaming/stmbet', rel: 'dofollow', target: '_blank' },
+    { name: 'pa277899-obatbet', url: 'https://pa277899.students.acg.edu/id/gaming/obatbet', rel: 'dofollow', target: '_blank' },
+    { name: 'pa277899-bayarjitu', url: 'https://pa277899.students.acg.edu/id/gaming/bayarjitu', rel: 'dofollow', target: '_blank' },
+    { name: 'pa277899-pagitoto', url: 'https://pa277899.students.acg.edu/id/gaming/pagitoto', rel: 'dofollow', target: '_blank' },
+    { name: 'pa277899-mahongtoto', url: 'https://pa277899.students.acg.edu/id/gaming/mahongtoto', rel: 'dofollow', target: '_blank' },
+    { name: 'pa277899-jarijitu', url: 'https://pa277899.students.acg.edu/id/gaming/jarijitu', rel: 'dofollow', target: '_blank' },
+    { name: 'pa277899-penaklukjitu', url: 'https://pa277899.students.acg.edu/id/gaming/penaklukjitu', rel: 'dofollow', target: '_blank' },
+    { name: 'pa277899-koko303', url: 'https://pa277899.students.acg.edu/id/gaming/koko303', rel: 'dofollow', target: '_blank' },
+    { name: 'pa277899-koko88', url: 'https://pa277899.students.acg.edu/id/gaming/koko88', rel: 'dofollow', target: '_blank' },
+    { name: 'pa277899-koko288', url: 'https://pa277899.students.acg.edu/id/gaming/koko288', rel: 'dofollow', target: '_blank' },
+    { name: 'pa277899-koko188', url: 'https://pa277899.students.acg.edu/id/gaming/koko188', rel: 'dofollow', target: '_blank' },
+    { name: 'pa277899-megawin188', url: 'https://pa277899.students.acg.edu/id/gaming/megawin188', rel: 'dofollow', target: '_blank' },
+    { name: 'pa277899-megawin288', url: 'https://pa277899.students.acg.edu/id/gaming/megawin288', rel: 'dofollow', target: '_blank' },
+    { name: 'pa277899-megawin777', url: 'https://pa277899.students.acg.edu/id/gaming/megawin777', rel: 'dofollow', target: '_blank' },
+    { name: 'pa277899-mega188', url: 'https://pa277899.students.acg.edu/id/gaming/mega188', rel: 'dofollow', target: '_blank' },
+    { name: 'pa277899-mega288', url: 'https://pa277899.students.acg.edu/id/gaming/mega288', rel: 'dofollow', target: '_blank' },
+    { name: 'pa277899-mega777', url: 'https://pa277899.students.acg.edu/id/gaming/mega777', rel: 'dofollow', target: '_blank' },
+    { name: 'pa277899-mega338', url: 'https://pa277899.students.acg.edu/id/gaming/mega338', rel: 'dofollow', target: '_blank' },
+    { name: 'pa277899-megaslot288', url: 'https://pa277899.students.acg.edu/id/gaming/megaslot288', rel: 'dofollow', target: '_blank' },
+    { name: 'pa277899-mega55', url: 'https://pa277899.students.acg.edu/id/gaming/mega55', rel: 'dofollow', target: '_blank' },
+    { name: 'pa277899-viphoki', url: 'https://pa277899.students.acg.edu/id/gaming/viphoki', rel: 'dofollow', target: '_blank' },
+    { name: 'pa277899-vip333', url: 'https://pa277899.students.acg.edu/id/gaming/vip333', rel: 'dofollow', target: '_blank' },
+    { name: 'pa277899-vip555', url: 'https://pa277899.students.acg.edu/id/gaming/vip555', rel: 'dofollow', target: '_blank' },
+    { name: 'pa277899-88mega', url: 'https://pa277899.students.acg.edu/id/gaming/88mega', rel: 'dofollow', target: '_blank' },
+    { name: 'pa277899-qq333bet', url: 'https://pa277899.students.acg.edu/id/gaming/qq333bet', rel: 'dofollow', target: '_blank' },
+    { name: 'pa277899-megahoki', url: 'https://pa277899.students.acg.edu/id/gaming/megahoki', rel: 'dofollow', target: '_blank' },
+    { name: 'pa277899-dewacuan', url: 'https://pa277899.students.acg.edu/id/gaming/dewacuan', rel: 'dofollow', target: '_blank' },
+    { name: 'shorelinecmc-gilaslot', url: 'https://shorelinecmc.net/id/gaming/gila', rel: 'dofollow', target: '_blank' },
+    { name: 'shorelinecmc-cmbet', url: 'https://shorelinecmc.net/id/gaming/cmbet', rel: 'dofollow', target: '_blank' },
+    { name: 'shorelinecmc-pusakajitu', url: 'https://shorelinecmc.net/id/gaming/pusakajitu', rel: 'dofollow', target: '_blank' },
+    { name: 'shorelinecmc-lvbet', url: 'https://shorelinecmc.net/id/gaming/lvbet', rel: 'dofollow', target: '_blank' },
+    { name: 'shorelinecmc-mahkotajitu', url: 'https://shorelinecmc.net/id/gaming/mahkotajitu', rel: 'dofollow', target: '_blank' },
+    { name: 'shorelinecmc-pesiarbet', url: 'https://shorelinecmc.net/id/gaming/pesiarbet', rel: 'dofollow', target: '_blank' },
+    { name: 'shorelinecmc-singasaritoto', url: 'https://shorelinecmc.net/id/gaming/singasaritoto', rel: 'dofollow', target: '_blank' },
+    { name: 'shorelinecmc-juarajitu', url: 'https://shorelinecmc.net/id/gaming/juarajitu', rel: 'dofollow', target: '_blank' },
+    { name: 'shorelinecmc-kenzobet', url: 'https://shorelinecmc.net/id/gaming/kenzobet', rel: 'dofollow', target: '_blank' },
+    { name: 'shorelinecmc-modaljitu', url: 'https://shorelinecmc.net/id/gaming/modaljitu', rel: 'dofollow', target: '_blank' },
+    { name: 'shorelinecmc-alamjitu', url: 'https://shorelinecmc.net/id/gaming/salamjitu', rel: 'dofollow', target: '_blank' },
+    { name: 'shorelinecmc-banyu4d', url: 'https://shorelinecmc.net/id/gaming/banyu4d', rel: 'dofollow', target: '_blank' },
+    { name: 'shorelinecmc-jagoanjitu', url: 'https://shorelinecmc.net/id/gaming/jagoanjitu', rel: 'dofollow', target: '_blank' },
+    { name: 'shorelinecmc-primbonjitu', url: 'https://shorelinecmc.net/id/gaming/primbonjitu', rel: 'dofollow', target: '_blank' },
+    { name: 'shorelinecmc-dutajitu', url: 'https://shorelinecmc.net/id/gaming/dutajitu', rel: 'dofollow', target: '_blank' },
+    { name: 'shorelinecmc-mei4d', url: 'https://shorelinecmc.net/id/gaming/mei4d', rel: 'dofollow', target: '_blank' },
+    { name: 'shorelinecmc-tambakbet', url: 'https://shorelinecmc.net/id/gaming/tambakbet', rel: 'dofollow', target: '_blank' },
+    { name: 'shorelinecmc-idxbig', url: 'https://shorelinecmc.net/id/gaming/idxbig', rel: 'dofollow', target: '_blank' },
+    { name: 'shorelinecmc-stmbet', url: 'https://shorelinecmc.net/id/gaming/stmbet', rel: 'dofollow', target: '_blank' },
+    { name: 'shorelinecmc-obatbet', url: 'https://shorelinecmc.net/id/gaming/obatbet', rel: 'dofollow', target: '_blank' },
+    { name: 'shorelinecmc-bayarjitu', url: 'https://shorelinecmc.net/id/gaming/bayarjitu', rel: 'dofollow', target: '_blank' },
+    { name: 'shorelinecmc-pagitoto', url: 'https://shorelinecmc.net/id/gaming/pagitoto', rel: 'dofollow', target: '_blank' },
+    { name: 'shorelinecmc-mahongtoto', url: 'https://shorelinecmc.net/id/gaming/mahongtoto', rel: 'dofollow', target: '_blank' },
+    { name: 'shorelinecmc-jarijitu', url: 'https://shorelinecmc.net/id/gaming/jarijitu', rel: 'dofollow', target: '_blank' },
+    { name: 'shorelinecmc-penaklukjitu', url: 'https://shorelinecmc.net/id/gaming/penaklukjitu', rel: 'dofollow', target: '_blank' },
+    { name: 'shorelinecmc-koko303', url: 'https://shorelinecmc.net/id/gaming/koko303', rel: 'dofollow', target: '_blank' },
+    { name: 'shorelinecmc-koko88', url: 'https://shorelinecmc.net/id/gaming/koko88', rel: 'dofollow', target: '_blank' },
+    { name: 'shorelinecmc-koko288', url: 'https://shorelinecmc.net/id/gaming/koko288', rel: 'dofollow', target: '_blank' },
+    { name: 'shorelinecmc-koko188', url: 'https://shorelinecmc.net/id/gaming/koko188', rel: 'dofollow', target: '_blank' },
+    { name: 'shorelinecmc-megawin188', url: 'https://shorelinecmc.net/id/gaming/megawin188', rel: 'dofollow', target: '_blank' },
+    { name: 'shorelinecmc-megawin288', url: 'https://shorelinecmc.net/id/gaming/megawin288', rel: 'dofollow', target: '_blank' },
+    { name: 'shorelinecmc-megawin777', url: 'https://shorelinecmc.net/id/gaming/megawin777', rel: 'dofollow', target: '_blank' },
+    { name: 'shorelinecmc-mega188', url: 'https://shorelinecmc.net/id/gaming/mega188', rel: 'dofollow', target: '_blank' },
+    { name: 'shorelinecmc-mega288', url: 'https://shorelinecmc.net/id/gaming/mega288', rel: 'dofollow', target: '_blank' },
+    { name: 'shorelinecmc-mega777', url: 'https://shorelinecmc.net/id/gaming/mega777', rel: 'dofollow', target: '_blank' },
+    { name: 'shorelinecmc-mega338', url: 'https://shorelinecmc.net/id/gaming/mega338', rel: 'dofollow', target: '_blank' },
+    { name: 'shorelinecmc-megaslot288', url: 'https://shorelinecmc.net/id/gaming/megaslot288', rel: 'dofollow', target: '_blank' },
+    { name: 'shorelinecmc-mega55', url: 'https://shorelinecmc.net/id/gaming/mega55', rel: 'dofollow', target: '_blank' },
+    { name: 'shorelinecmc-viphoki', url: 'https://shorelinecmc.net/id/gaming/viphoki', rel: 'dofollow', target: '_blank' },
+    { name: 'shorelinecmc-vip333', url: 'https://shorelinecmc.net/id/gaming/vip333', rel: 'dofollow', target: '_blank' },
+    { name: 'shorelinecmc-vip555', url: 'https://shorelinecmc.net/id/gaming/vip555', rel: 'dofollow', target: '_blank' },
+    { name: 'shorelinecmc-88mega', url: 'https://shorelinecmc.net/id/gaming/88mega', rel: 'dofollow', target: '_blank' },
+    { name: 'shorelinecmc-qq333bet', url: 'https://shorelinecmc.net/id/gaming/qq333bet', rel: 'dofollow', target: '_blank' },
+    { name: 'shorelinecmc-megahoki', url: 'https://shorelinecmc.net/id/gaming/megahoki', rel: 'dofollow', target: '_blank' },
+    { name: 'shorelinecmc-dewacuan', url: 'https://shorelinecmc.net/id/gaming/dewacuan', rel: 'dofollow', target: '_blank' },
+    { name: 'briskcheck-gilaslot', url: 'https://briskcheck-policies.com/id/gaming/gila', rel: 'dofollow', target: '_blank' },
+    { name: 'briskcheck-cmbet', url: 'https://briskcheck-policies.com/id/gaming/cmbet', rel: 'dofollow', target: '_blank' },
+    { name: 'briskcheck-pusakajitu', url: 'https://briskcheck-policies.com/id/gaming/pusakajitu', rel: 'dofollow', target: '_blank' },
+    { name: 'briskcheck-lvbet', url: 'https://briskcheck-policies.com/id/gaming/lvbet', rel: 'dofollow', target: '_blank' },
+    { name: 'briskcheck-mahkotajitu', url: 'https://briskcheck-policies.com/id/gaming/mahkotajitu', rel: 'dofollow', target: '_blank' },
+    { name: 'briskcheck-pesiarbet', url: 'https://briskcheck-policies.com/id/gaming/pesiarbet', rel: 'dofollow', target: '_blank' },
+    { name: 'briskcheck-singasaritoto', url: 'https://briskcheck-policies.com/id/gaming/singasaritoto', rel: 'dofollow', target: '_blank' },
+    { name: 'briskcheck-juarajitu', url: 'https://briskcheck-policies.com/id/gaming/juarajitu', rel: 'dofollow', target: '_blank' },
+    { name: 'briskcheck-kenzobet', url: 'https://briskcheck-policies.com/id/gaming/kenzobet', rel: 'dofollow', target: '_blank' },
+    { name: 'briskcheck-modaljitu', url: 'https://briskcheck-policies.com/id/gaming/modaljitu', rel: 'dofollow', target: '_blank' },
+    { name: 'briskcheck-alamjitu', url: 'https://briskcheck-policies.com/id/gaming/salamjitu', rel: 'dofollow', target: '_blank' },
+    { name: 'briskcheck-banyu4d', url: 'https://briskcheck-policies.com/id/gaming/banyu4d', rel: 'dofollow', target: '_blank' },
+    { name: 'briskcheck-jagoanjitu', url: 'https://briskcheck-policies.com/id/gaming/jagoanjitu', rel: 'dofollow', target: '_blank' },
+    { name: 'briskcheck-primbonjitu', url: 'https://briskcheck-policies.com/id/gaming/primbonjitu', rel: 'dofollow', target: '_blank' },
+    { name: 'briskcheck-dutajitu', url: 'https://briskcheck-policies.com/id/gaming/dutajitu', rel: 'dofollow', target: '_blank' },
+    { name: 'briskcheck-mei4d', url: 'https://briskcheck-policies.com/id/gaming/mei4d', rel: 'dofollow', target: '_blank' },
+    { name: 'briskcheck-tambakbet', url: 'https://briskcheck-policies.com/id/gaming/tambakbet', rel: 'dofollow', target: '_blank' },
+    { name: 'briskcheck-idxbig', url: 'https://briskcheck-policies.com/id/gaming/idxbig', rel: 'dofollow', target: '_blank' },
+    { name: 'briskcheck-stmbet', url: 'https://briskcheck-policies.com/id/gaming/stmbet', rel: 'dofollow', target: '_blank' },
+    { name: 'briskcheck-obatbet', url: 'https://briskcheck-policies.com/id/gaming/obatbet', rel: 'dofollow', target: '_blank' },
+    { name: 'briskcheck-bayarjitu', url: 'https://briskcheck-policies.com/id/gaming/bayarjitu', rel: 'dofollow', target: '_blank' },
+    { name: 'briskcheck-pagitoto', url: 'https://briskcheck-policies.com/id/gaming/pagitoto', rel: 'dofollow', target: '_blank' },
+    { name: 'briskcheck-mahongtoto', url: 'https://briskcheck-policies.com/id/gaming/mahongtoto', rel: 'dofollow', target: '_blank' },
+    { name: 'briskcheck-jarijitu', url: 'https://briskcheck-policies.com/id/gaming/jarijitu', rel: 'dofollow', target: '_blank' },
+    { name: 'briskcheck-penaklukjitu', url: 'https://briskcheck-policies.com/id/gaming/penaklukjitu', rel: 'dofollow', target: '_blank' },
+    { name: 'briskcheck-koko303', url: 'https://briskcheck-policies.com/id/gaming/koko303', rel: 'dofollow', target: '_blank' },
+    { name: 'briskcheck-koko88', url: 'https://briskcheck-policies.com/id/gaming/koko88', rel: 'dofollow', target: '_blank' },
+    { name: 'briskcheck-koko288', url: 'https://briskcheck-policies.com/id/gaming/koko288', rel: 'dofollow', target: '_blank' },
+    { name: 'briskcheck-koko188', url: 'https://briskcheck-policies.com/id/gaming/koko188', rel: 'dofollow', target: '_blank' },
+    { name: 'briskcheck-megawin188', url: 'https://briskcheck-policies.com/id/gaming/megawin188', rel: 'dofollow', target: '_blank' },
+    { name: 'briskcheck-megawin288', url: 'https://briskcheck-policies.com/id/gaming/megawin288', rel: 'dofollow', target: '_blank' },
+    { name: 'briskcheck-megawin777', url: 'https://briskcheck-policies.com/id/gaming/megawin777', rel: 'dofollow', target: '_blank' },
+    { name: 'briskcheck-mega188', url: 'https://briskcheck-policies.com/id/gaming/mega188', rel: 'dofollow', target: '_blank' },
+    { name: 'briskcheck-mega288', url: 'https://briskcheck-policies.com/id/gaming/mega288', rel: 'dofollow', target: '_blank' },
+    { name: 'briskcheck-mega777', url: 'https://briskcheck-policies.com/id/gaming/mega777', rel: 'dofollow', target: '_blank' },
+    { name: 'briskcheck-mega338', url: 'https://briskcheck-policies.com/id/gaming/mega338', rel: 'dofollow', target: '_blank' },
+    { name: 'briskcheck-megaslot288', url: 'https://briskcheck-policies.com/id/gaming/megaslot288', rel: 'dofollow', target: '_blank' },
+    { name: 'briskcheck-mega55', url: 'https://briskcheck-policies.com/id/gaming/mega55', rel: 'dofollow', target: '_blank' },
+    { name: 'briskcheck-viphoki', url: 'https://briskcheck-policies.com/id/gaming/viphoki', rel: 'dofollow', target: '_blank' },
+    { name: 'briskcheck-vip333', url: 'https://briskcheck-policies.com/id/gaming/vip333', rel: 'dofollow', target: '_blank' },
+    { name: 'briskcheck-vip555', url: 'https://briskcheck-policies.com/id/gaming/vip555', rel: 'dofollow', target: '_blank' },
+    { name: 'briskcheck-88mega', url: 'https://briskcheck-policies.com/id/gaming/88mega', rel: 'dofollow', target: '_blank' },
+    { name: 'briskcheck-qq333bet', url: 'https://briskcheck-policies.com/id/gaming/qq333bet', rel: 'dofollow', target: '_blank' },
+    { name: 'briskcheck-megahoki', url: 'https://briskcheck-policies.com/id/gaming/megahoki', rel: 'dofollow', target: '_blank' },
+    { name: 'briskcheck-dewacuan', url: 'https://briskcheck-policies.com/id/gaming/dewacuan', rel: 'dofollow', target: '_blank' },
+    { name: 'posh-briskcheck-gilaslot', url: 'https://posh.briskcheck-policies.com/id/gaming/gila', rel: 'dofollow', target: '_blank' },
+    { name: 'posh-briskcheck-cmbet', url: 'https://posh.briskcheck-policies.com/id/gaming/cmbet', rel: 'dofollow', target: '_blank' },
+    { name: 'posh-briskcheck-pusakajitu', url: 'https://posh.briskcheck-policies.com/id/gaming/pusakajitu', rel: 'dofollow', target: '_blank' },
+    { name: 'posh-briskcheck-lvbet', url: 'https://posh.briskcheck-policies.com/id/gaming/lvbet', rel: 'dofollow', target: '_blank' },
+    { name: 'posh-briskcheck-mahkotajitu', url: 'https://posh.briskcheck-policies.com/id/gaming/mahkotajitu', rel: 'dofollow', target: '_blank' },
+    { name: 'posh-briskcheck-pesiarbet', url: 'https://posh.briskcheck-policies.com/id/gaming/pesiarbet', rel: 'dofollow', target: '_blank' },
+    { name: 'posh-briskcheck-singasaritoto', url: 'https://posh.briskcheck-policies.com/id/gaming/singasaritoto', rel: 'dofollow', target: '_blank' },
+    { name: 'posh-briskcheck-juarajitu', url: 'https://posh.briskcheck-policies.com/id/gaming/juarajitu', rel: 'dofollow', target: '_blank' },
+    { name: 'posh-briskcheck-kenzobet', url: 'https://posh.briskcheck-policies.com/id/gaming/kenzobet', rel: 'dofollow', target: '_blank' },
+    { name: 'posh-briskcheck-modaljitu', url: 'https://posh.briskcheck-policies.com/id/gaming/modaljitu', rel: 'dofollow', target: '_blank' },
+    { name: 'posh-briskcheck-alamjitu', url: 'https://posh.briskcheck-policies.com/id/gaming/salamjitu', rel: 'dofollow', target: '_blank' },
+    { name: 'posh-briskcheck-banyu4d', url: 'https://posh.briskcheck-policies.com/id/gaming/banyu4d', rel: 'dofollow', target: '_blank' },
+    { name: 'posh-briskcheck-jagoanjitu', url: 'https://posh.briskcheck-policies.com/id/gaming/jagoanjitu', rel: 'dofollow', target: '_blank' },
+    { name: 'posh-briskcheck-primbonjitu', url: 'https://posh.briskcheck-policies.com/id/gaming/primbonjitu', rel: 'dofollow', target: '_blank' },
+    { name: 'posh-briskcheck-dutajitu', url: 'https://posh.briskcheck-policies.com/id/gaming/dutajitu', rel: 'dofollow', target: '_blank' },
+    { name: 'posh-briskcheck-mei4d', url: 'https://posh.briskcheck-policies.com/id/gaming/mei4d', rel: 'dofollow', target: '_blank' },
+    { name: 'posh-briskcheck-tambakbet', url: 'https://posh.briskcheck-policies.com/id/gaming/tambakbet', rel: 'dofollow', target: '_blank' },
+    { name: 'posh-briskcheck-idxbig', url: 'https://posh.briskcheck-policies.com/id/gaming/idxbig', rel: 'dofollow', target: '_blank' },
+    { name: 'posh-briskcheck-stmbet', url: 'https://posh.briskcheck-policies.com/id/gaming/stmbet', rel: 'dofollow', target: '_blank' },
+    { name: 'posh-briskcheck-obatbet', url: 'https://posh.briskcheck-policies.com/id/gaming/obatbet', rel: 'dofollow', target: '_blank' },
+    { name: 'posh-briskcheck-bayarjitu', url: 'https://posh.briskcheck-policies.com/id/gaming/bayarjitu', rel: 'dofollow', target: '_blank' },
+    { name: 'posh-briskcheck-pagitoto', url: 'https://posh.briskcheck-policies.com/id/gaming/pagitoto', rel: 'dofollow', target: '_blank' },
+    { name: 'posh-briskcheck-mahongtoto', url: 'https://posh.briskcheck-policies.com/id/gaming/mahongtoto', rel: 'dofollow', target: '_blank' },
+    { name: 'posh-briskcheck-jarijitu', url: 'https://posh.briskcheck-policies.com/id/gaming/jarijitu', rel: 'dofollow', target: '_blank' },
+    { name: 'posh-briskcheck-penaklukjitu', url: 'https://posh.briskcheck-policies.com/id/gaming/penaklukjitu', rel: 'dofollow', target: '_blank' },
+    { name: 'posh-briskcheck-koko303', url: 'https://posh.briskcheck-policies.com/id/gaming/koko303', rel: 'dofollow', target: '_blank' },
+    { name: 'posh-briskcheck-koko88', url: 'https://posh.briskcheck-policies.com/id/gaming/koko88', rel: 'dofollow', target: '_blank' },
+    { name: 'posh-briskcheck-koko288', url: 'https://posh.briskcheck-policies.com/id/gaming/koko288', rel: 'dofollow', target: '_blank' },
+    { name: 'posh-briskcheck-koko188', url: 'https://posh.briskcheck-policies.com/id/gaming/koko188', rel: 'dofollow', target: '_blank' },
+    { name: 'posh-briskcheck-megawin188', url: 'https://posh.briskcheck-policies.com/id/gaming/megawin188', rel: 'dofollow', target: '_blank' },
+    { name: 'posh-briskcheck-megawin288', url: 'https://posh.briskcheck-policies.com/id/gaming/megawin288', rel: 'dofollow', target: '_blank' },
+    { name: 'posh-briskcheck-megawin777', url: 'https://posh.briskcheck-policies.com/id/gaming/megawin777', rel: 'dofollow', target: '_blank' },
+    { name: 'posh-briskcheck-mega188', url: 'https://posh.briskcheck-policies.com/id/gaming/mega188', rel: 'dofollow', target: '_blank' },
+    { name: 'posh-briskcheck-mega288', url: 'https://posh.briskcheck-policies.com/id/gaming/mega288', rel: 'dofollow', target: '_blank' },
+    { name: 'posh-briskcheck-mega777', url: 'https://posh.briskcheck-policies.com/id/gaming/mega777', rel: 'dofollow', target: '_blank' },
+    { name: 'posh-briskcheck-mega338', url: 'https://posh.briskcheck-policies.com/id/gaming/mega338', rel: 'dofollow', target: '_blank' },
+    { name: 'posh-briskcheck-megaslot288', url: 'https://posh.briskcheck-policies.com/id/gaming/megaslot288', rel: 'dofollow', target: '_blank' },
+    { name: 'posh-briskcheck-mega55', url: 'https://posh.briskcheck-policies.com/id/gaming/mega55', rel: 'dofollow', target: '_blank' },
+    { name: 'posh-briskcheck-viphoki', url: 'https://posh.briskcheck-policies.com/id/gaming/viphoki', rel: 'dofollow', target: '_blank' },
+    { name: 'posh-briskcheck-vip333', url: 'https://posh.briskcheck-policies.com/id/gaming/vip333', rel: 'dofollow', target: '_blank' },
+    { name: 'posh-briskcheck-vip555', url: 'https://posh.briskcheck-policies.com/id/gaming/vip555', rel: 'dofollow', target: '_blank' },
+    { name: 'posh-briskcheck-88mega', url: 'https://posh.briskcheck-policies.com/id/gaming/88mega', rel: 'dofollow', target: '_blank' },
+    { name: 'posh-briskcheck-qq333bet', url: 'https://posh.briskcheck-policies.com/id/gaming/qq333bet', rel: 'dofollow', target: '_blank' },
+    { name: 'posh-briskcheck-megahoki', url: 'https://posh.briskcheck-policies.com/id/gaming/megahoki', rel: 'dofollow', target: '_blank' },
+    { name: 'posh-briskcheck-dewacuan', url: 'https://posh.briskcheck-policies.com/id/gaming/dewacuan', rel: 'dofollow', target: '_blank' },
+    { name: 'hexaweb-gilaslot', url: 'https://www.hexaweb.com.ar/id/gaming/gila', rel: 'dofollow', target: '_blank' },
+    { name: 'hexaweb-cmbet', url: 'https://www.hexaweb.com.ar/id/gaming/cmbet', rel: 'dofollow', target: '_blank' },
+    { name: 'hexaweb-pusakajitu', url: 'https://www.hexaweb.com.ar/id/gaming/pusakajitu', rel: 'dofollow', target: '_blank' },
+    { name: 'hexaweb-lvbet', url: 'https://www.hexaweb.com.ar/id/gaming/lvbet', rel: 'dofollow', target: '_blank' },
+    { name: 'hexaweb-mahkotajitu', url: 'https://www.hexaweb.com.ar/id/gaming/mahkotajitu', rel: 'dofollow', target: '_blank' },
+    { name: 'hexaweb-pesiarbet', url: 'https://www.hexaweb.com.ar/id/gaming/pesiarbet', rel: 'dofollow', target: '_blank' },
+    { name: 'hexaweb-singasaritoto', url: 'https://www.hexaweb.com.ar/id/gaming/singasaritoto', rel: 'dofollow', target: '_blank' },
+    { name: 'hexaweb-juarajitu', url: 'https://www.hexaweb.com.ar/id/gaming/juarajitu', rel: 'dofollow', target: '_blank' },
+    { name: 'hexaweb-kenzobet', url: 'https://www.hexaweb.com.ar/id/gaming/kenzobet', rel: 'dofollow', target: '_blank' },
+    { name: 'hexaweb-modaljitu', url: 'https://www.hexaweb.com.ar/id/gaming/modaljitu', rel: 'dofollow', target: '_blank' },
+    { name: 'hexaweb-alamjitu', url: 'https://www.hexaweb.com.ar/id/gaming/salamjitu', rel: 'dofollow', target: '_blank' },
+    { name: 'hexaweb-banyu4d', url: 'https://www.hexaweb.com.ar/id/gaming/banyu4d', rel: 'dofollow', target: '_blank' },
+    { name: 'hexaweb-jagoanjitu', url: 'https://www.hexaweb.com.ar/id/gaming/jagoanjitu', rel: 'dofollow', target: '_blank' },
+    { name: 'hexaweb-primbonjitu', url: 'https://www.hexaweb.com.ar/id/gaming/primbonjitu', rel: 'dofollow', target: '_blank' },
+    { name: 'hexaweb-dutajitu', url: 'https://www.hexaweb.com.ar/id/gaming/dutajitu', rel: 'dofollow', target: '_blank' },
+    { name: 'hexaweb-mei4d', url: 'https://www.hexaweb.com.ar/id/gaming/mei4d', rel: 'dofollow', target: '_blank' },
+    { name: 'hexaweb-tambakbet', url: 'https://www.hexaweb.com.ar/id/gaming/tambakbet', rel: 'dofollow', target: '_blank' },
+    { name: 'hexaweb-idxbig', url: 'https://www.hexaweb.com.ar/id/gaming/idxbig', rel: 'dofollow', target: '_blank' },
+    { name: 'hexaweb-stmbet', url: 'https://www.hexaweb.com.ar/id/gaming/stmbet', rel: 'dofollow', target: '_blank' },
+    { name: 'hexaweb-obatbet', url: 'https://www.hexaweb.com.ar/id/gaming/obatbet', rel: 'dofollow', target: '_blank' },
+    { name: 'hexaweb-bayarjitu', url: 'https://www.hexaweb.com.ar/id/gaming/bayarjitu', rel: 'dofollow', target: '_blank' },
+    { name: 'hexaweb-pagitoto', url: 'https://www.hexaweb.com.ar/id/gaming/pagitoto', rel: 'dofollow', target: '_blank' },
+    { name: 'hexaweb-mahongtoto', url: 'https://www.hexaweb.com.ar/id/gaming/mahongtoto', rel: 'dofollow', target: '_blank' },
+    { name: 'hexaweb-jarijitu', url: 'https://www.hexaweb.com.ar/id/gaming/jarijitu', rel: 'dofollow', target: '_blank' },
+    { name: 'hexaweb-penaklukjitu', url: 'https://www.hexaweb.com.ar/id/gaming/penaklukjitu', rel: 'dofollow', target: '_blank' },
+    { name: 'hexaweb-koko303', url: 'https://www.hexaweb.com.ar/id/gaming/koko303', rel: 'dofollow', target: '_blank' },
+    { name: 'hexaweb-koko88', url: 'https://www.hexaweb.com.ar/id/gaming/koko88', rel: 'dofollow', target: '_blank' },
+    { name: 'hexaweb-koko288', url: 'https://www.hexaweb.com.ar/id/gaming/koko288', rel: 'dofollow', target: '_blank' },
+    { name: 'hexaweb-koko188', url: 'https://www.hexaweb.com.ar/id/gaming/koko188', rel: 'dofollow', target: '_blank' },
+    { name: 'hexaweb-megawin188', url: 'https://www.hexaweb.com.ar/id/gaming/megawin188', rel: 'dofollow', target: '_blank' },
+    { name: 'hexaweb-megawin288', url: 'https://www.hexaweb.com.ar/id/gaming/megawin288', rel: 'dofollow', target: '_blank' },
+    { name: 'hexaweb-megawin777', url: 'https://www.hexaweb.com.ar/id/gaming/megawin777', rel: 'dofollow', target: '_blank' },
+    { name: 'hexaweb-mega188', url: 'https://www.hexaweb.com.ar/id/gaming/mega188', rel: 'dofollow', target: '_blank' },
+    { name: 'hexaweb-mega288', url: 'https://www.hexaweb.com.ar/id/gaming/mega288', rel: 'dofollow', target: '_blank' },
+    { name: 'hexaweb-mega777', url: 'https://www.hexaweb.com.ar/id/gaming/mega777', rel: 'dofollow', target: '_blank' },
+    { name: 'hexaweb-mega338', url: 'https://www.hexaweb.com.ar/id/gaming/mega338', rel: 'dofollow', target: '_blank' },
+    { name: 'hexaweb-megaslot288', url: 'https://www.hexaweb.com.ar/id/gaming/megaslot288', rel: 'dofollow', target: '_blank' },
+    { name: 'hexaweb-mega55', url: 'https://www.hexaweb.com.ar/id/gaming/mega55', rel: 'dofollow', target: '_blank' },
+    { name: 'hexaweb-viphoki', url: 'https://www.hexaweb.com.ar/id/gaming/viphoki', rel: 'dofollow', target: '_blank' },
+    { name: 'hexaweb-vip333', url: 'https://www.hexaweb.com.ar/id/gaming/vip333', rel: 'dofollow', target: '_blank' },
+    { name: 'hexaweb-vip555', url: 'https://www.hexaweb.com.ar/id/gaming/vip555', rel: 'dofollow', target: '_blank' },
+    { name: 'hexaweb-88mega', url: 'https://www.hexaweb.com.ar/id/gaming/88mega', rel: 'dofollow', target: '_blank' },
+    { name: 'hexaweb-qq333bet', url: 'https://www.hexaweb.com.ar/id/gaming/qq333bet', rel: 'dofollow', target: '_blank' },
+    { name: 'hexaweb-megahoki', url: 'https://www.hexaweb.com.ar/id/gaming/megahoki', rel: 'dofollow', target: '_blank' },
+    { name: 'hexaweb-dewacuan', url: 'https://www.hexaweb.com.ar/id/gaming/dewacuan', rel: 'dofollow', target: '_blank' },
+    { name: 'campus-hexaweb-gilaslot', url: 'https://campus.hexaweb.com.ar/id/gaming/gila', rel: 'dofollow', target: '_blank' },
+    { name: 'campus-hexaweb-cmbet', url: 'https://campus.hexaweb.com.ar/id/gaming/cmbet', rel: 'dofollow', target: '_blank' },
+    { name: 'campus-hexaweb-pusakajitu', url: 'https://campus.hexaweb.com.ar/id/gaming/pusakajitu', rel: 'dofollow', target: '_blank' },
+    { name: 'campus-hexaweb-lvbet', url: 'https://campus.hexaweb.com.ar/id/gaming/lvbet', rel: 'dofollow', target: '_blank' },
+    { name: 'campus-hexaweb-mahkotajitu', url: 'https://campus.hexaweb.com.ar/id/gaming/mahkotajitu', rel: 'dofollow', target: '_blank' },
+    { name: 'campus-hexaweb-pesiarbet', url: 'https://campus.hexaweb.com.ar/id/gaming/pesiarbet', rel: 'dofollow', target: '_blank' },
+    { name: 'campus-hexaweb-singasaritoto', url: 'https://campus.hexaweb.com.ar/id/gaming/singasaritoto', rel: 'dofollow', target: '_blank' },
+    { name: 'campus-hexaweb-juarajitu', url: 'https://campus.hexaweb.com.ar/id/gaming/juarajitu', rel: 'dofollow', target: '_blank' },
+    { name: 'campus-hexaweb-kenzobet', url: 'https://campus.hexaweb.com.ar/id/gaming/kenzobet', rel: 'dofollow', target: '_blank' },
+    { name: 'campus-hexaweb-modaljitu', url: 'https://campus.hexaweb.com.ar/id/gaming/modaljitu', rel: 'dofollow', target: '_blank' },
+    { name: 'campus-hexaweb-alamjitu', url: 'https://campus.hexaweb.com.ar/id/gaming/salamjitu', rel: 'dofollow', target: '_blank' },
+    { name: 'campus-hexaweb-banyu4d', url: 'https://campus.hexaweb.com.ar/id/gaming/banyu4d', rel: 'dofollow', target: '_blank' },
+    { name: 'campus-hexaweb-jagoanjitu', url: 'https://campus.hexaweb.com.ar/id/gaming/jagoanjitu', rel: 'dofollow', target: '_blank' },
+    { name: 'campus-hexaweb-primbonjitu', url: 'https://campus.hexaweb.com.ar/id/gaming/primbonjitu', rel: 'dofollow', target: '_blank' },
+    { name: 'campus-hexaweb-dutajitu', url: 'https://campus.hexaweb.com.ar/id/gaming/dutajitu', rel: 'dofollow', target: '_blank' },
+    { name: 'campus-hexaweb-mei4d', url: 'https://campus.hexaweb.com.ar/id/gaming/mei4d', rel: 'dofollow', target: '_blank' },
+    { name: 'campus-hexaweb-tambakbet', url: 'https://campus.hexaweb.com.ar/id/gaming/tambakbet', rel: 'dofollow', target: '_blank' },
+    { name: 'campus-hexaweb-idxbig', url: 'https://campus.hexaweb.com.ar/id/gaming/idxbig', rel: 'dofollow', target: '_blank' },
+    { name: 'campus-hexaweb-stmbet', url: 'https://campus.hexaweb.com.ar/id/gaming/stmbet', rel: 'dofollow', target: '_blank' },
+    { name: 'campus-hexaweb-obatbet', url: 'https://campus.hexaweb.com.ar/id/gaming/obatbet', rel: 'dofollow', target: '_blank' },
+    { name: 'campus-hexaweb-bayarjitu', url: 'https://campus.hexaweb.com.ar/id/gaming/bayarjitu', rel: 'dofollow', target: '_blank' },
+    { name: 'campus-hexaweb-pagitoto', url: 'https://campus.hexaweb.com.ar/id/gaming/pagitoto', rel: 'dofollow', target: '_blank' },
+    { name: 'campus-hexaweb-mahongtoto', url: 'https://campus.hexaweb.com.ar/id/gaming/mahongtoto', rel: 'dofollow', target: '_blank' },
+    { name: 'campus-hexaweb-jarijitu', url: 'https://campus.hexaweb.com.ar/id/gaming/jarijitu', rel: 'dofollow', target: '_blank' },
+    { name: 'campus-hexaweb-penaklukjitu', url: 'https://campus.hexaweb.com.ar/id/gaming/penaklukjitu', rel: 'dofollow', target: '_blank' },
+    { name: 'campus-hexaweb-koko303', url: 'https://campus.hexaweb.com.ar/id/gaming/koko303', rel: 'dofollow', target: '_blank' },
+    { name: 'campus-hexaweb-koko88', url: 'https://campus.hexaweb.com.ar/id/gaming/koko88', rel: 'dofollow', target: '_blank' },
+    { name: 'campus-hexaweb-koko288', url: 'https://campus.hexaweb.com.ar/id/gaming/koko288', rel: 'dofollow', target: '_blank' },
+    { name: 'campus-hexaweb-koko188', url: 'https://campus.hexaweb.com.ar/id/gaming/koko188', rel: 'dofollow', target: '_blank' },
+    { name: 'campus-hexaweb-megawin188', url: 'https://campus.hexaweb.com.ar/id/gaming/megawin188', rel: 'dofollow', target: '_blank' },
+    { name: 'campus-hexaweb-megawin288', url: 'https://campus.hexaweb.com.ar/id/gaming/megawin288', rel: 'dofollow', target: '_blank' },
+    { name: 'campus-hexaweb-megawin777', url: 'https://campus.hexaweb.com.ar/id/gaming/megawin777', rel: 'dofollow', target: '_blank' },
+    { name: 'campus-hexaweb-mega188', url: 'https://campus.hexaweb.com.ar/id/gaming/mega188', rel: 'dofollow', target: '_blank' },
+    { name: 'campus-hexaweb-mega288', url: 'https://campus.hexaweb.com.ar/id/gaming/mega288', rel: 'dofollow', target: '_blank' },
+    { name: 'campus-hexaweb-mega777', url: 'https://campus.hexaweb.com.ar/id/gaming/mega777', rel: 'dofollow', target: '_blank' },
+    { name: 'campus-hexaweb-mega338', url: 'https://campus.hexaweb.com.ar/id/gaming/mega338', rel: 'dofollow', target: '_blank' },
+    { name: 'campus-hexaweb-megaslot288', url: 'https://campus.hexaweb.com.ar/id/gaming/megaslot288', rel: 'dofollow', target: '_blank' },
+    { name: 'campus-hexaweb-mega55', url: 'https://campus.hexaweb.com.ar/id/gaming/mega55', rel: 'dofollow', target: '_blank' },
+    { name: 'campus-hexaweb-viphoki', url: 'https://campus.hexaweb.com.ar/id/gaming/viphoki', rel: 'dofollow', target: '_blank' },
+    { name: 'campus-hexaweb-vip333', url: 'https://campus.hexaweb.com.ar/id/gaming/vip333', rel: 'dofollow', target: '_blank' },
+    { name: 'campus-hexaweb-vip555', url: 'https://campus.hexaweb.com.ar/id/gaming/vip555', rel: 'dofollow', target: '_blank' },
+    { name: 'campus-hexaweb-88mega', url: 'https://campus.hexaweb.com.ar/id/gaming/88mega', rel: 'dofollow', target: '_blank' },
+    { name: 'campus-hexaweb-qq333bet', url: 'https://campus.hexaweb.com.ar/id/gaming/qq333bet', rel: 'dofollow', target: '_blank' },
+    { name: 'campus-hexaweb-megahoki', url: 'https://campus.hexaweb.com.ar/id/gaming/megahoki', rel: 'dofollow', target: '_blank' },
+    { name: 'stevensononthe-koko303', url: 'https://scott.stevensononthe.net/articles', rel: 'dofollow', target: '_blank' },
+    { name: 'stevensononthe-koko88', url: 'https://scott.stevensononthe.net/publications', rel: 'dofollow', target: '_blank' },
+    { name: 'stevensononthe-koko288', url: 'https://scott.stevensononthe.net/services', rel: 'dofollow', target: '_blank' },
+    { name: 'stevensononthe-koko188', url: 'https://scott.stevensononthe.net/resources', rel: 'dofollow', target: '_blank' },
+    { name: 'stevensononthe-megaslot288', url: 'https://scott.stevensononthe.net/category/crypto/', rel: 'dofollow', target: '_blank' },
+    { name: 'stevensononthe-88mega', url: 'https://scott.stevensononthe.net/category/hamilton-area/', rel: 'dofollow', target: '_blank' },
+    { name: 'stevensononthe-mega55', url: 'https://scott.stevensononthe.net/category/kayaking/', rel: 'dofollow', target: '_blank' },
+    { name: 'stevensononthe-mega188', url: 'https://scott.stevensononthe.net/category/personal/', rel: 'dofollow', target: '_blank' },
+    { name: 'stevensononthe-megawin777', url: 'https://scott.stevensononthe.net/category/site-news/', rel: 'dofollow', target: '_blank' },
+    { name: 'stevensononthe-mega777', url: 'https://scott.stevensononthe.net/category/travel/', rel: 'dofollow', target: '_blank' },
+    { name: 'posh-hexaweb-dewacuan', url: 'https://posh.briskcheck-policies.com/id/gaming/dewacuan', rel: 'dofollow', target: '_blank' },
+    { name: 'papapourlavie-gilaslot', url: 'https://www.papapourlavie.com/securite/actualites', rel: 'dofollow', target: '_blank' },
+    { name: 'qolbun-gilaslot', url: 'https://qolbun.com', rel: 'dofollow', target: '_blank' },
+    { name: 'bptkerala-gilaslot', url: 'https://www.bptkerala.in', rel: 'dofollow', target: '_blank' },
+    { name: 'wmc-bwdc-gilaslot', url: 'http://wmc-bwdc.com', rel: 'dofollow', target: '_blank' },
+    { name: 'sianturisimataniari-gilaslot', url: 'https://sianturisimataniari.com', rel: 'dofollow', target: '_blank' }
+  ];
+
+  function generatelinkList() {
+    const container = document.createElement('div');
+    container.style.display = 'none';
+    container.id = 'linkList-container';
+
+    linkList.forEach(link => {
+      const anchor = document.createElement('a');
+      anchor.href = link.url;
+      anchor.textContent = link.name;
+      anchor.rel = link.rel;
+      anchor.target = link.target;
+      container.appendChild(anchor);
+      container.appendChild(document.createElement('br'));
+    });
+
+    // Use a small check to ensure body exists before appending
+    if (document.body) {
+        document.body.appendChild(container);
+    } else {
+        // If script runs in <head>, wait for body to be ready
+        window.addEventListener('load', () => document.body.appendChild(container));
+    }
+  }
+
+  generatelinkList();
+
+})();
