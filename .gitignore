@@ -1,5 +1,5 @@
 README.txt
 /assets
-/auto-keyword/autokeyword.clear.js
-/auto-link/auto-link.clear.js
-/auto-link/auto-link.clear.js.original
+*autokeyword.clear.js
+*autolink.clear.js
+*autolink.clear.js.original
